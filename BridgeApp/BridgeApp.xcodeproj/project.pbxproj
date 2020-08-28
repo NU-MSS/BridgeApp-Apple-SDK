@@ -74,7 +74,6 @@
 		FF196A99242C29CA008BD7EA /* Symptoms.json in Resources */ = {isa = PBXBuildFile; fileRef = FF196A96242C29C9008BD7EA /* Symptoms.json */; };
 		FF196A9A242C29CA008BD7EA /* Triggers.json in Resources */ = {isa = PBXBuildFile; fileRef = FF196A97242C29CA008BD7EA /* Triggers.json */; };
 		FF196A9B242C29CA008BD7EA /* Medication.json in Resources */ = {isa = PBXBuildFile; fileRef = FF196A98242C29CA008BD7EA /* Medication.json */; };
-		FF29AAA624492FAD00C39E02 /* BridgeSDK_Test.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF29AAA424492F8B00C39E02 /* BridgeSDK_Test.framework */; };
 		FF29AAA924492FAF00C39E02 /* BridgeSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F87D2AC522780599007CA2B5 /* BridgeSDK.framework */; };
 		FF29AAAB24492FB100C39E02 /* Research.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F87D2AC722780599007CA2B5 /* Research.framework */; };
 		FF3A810F22C17B9300CD737D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FF3A810E22C17B9300CD737D /* Images.xcassets */; };
@@ -368,7 +367,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF29AAA624492FAD00C39E02 /* BridgeSDK_Test.framework in Frameworks */,
 				FF29AAAB24492FB100C39E02 /* Research.framework in Frameworks */,
 				FF29AAA924492FAF00C39E02 /* BridgeSDK.framework in Frameworks */,
 			);
