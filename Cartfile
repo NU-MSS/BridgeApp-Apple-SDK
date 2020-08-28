@@ -1,2 +1,2 @@
-github "Sage-Bionetworks/SageResearch" ~> 3.2
+github "Sage-Bionetworks/SageResearch" ~> 3.7
 github "Sage-Bionetworks/Bridge-iOS-SDK" ~> 4.2.72

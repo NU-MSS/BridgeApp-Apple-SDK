@@ -104,7 +104,7 @@ open class SBAArchiveManager : NSObject, RSDDataArchiveManager {
         
         // Look for a schema info associated with this portion of the task result. If not found, then
         // return the current archive.
-        let schema = taskResult.schemaInfo ?? self.schemaInfo(for: taskResult.identifier)
+        let schema = (taskResult as? RSDTaskRunResult)?.schemaInfo ?? self.schemaInfo(for: taskResult.identifier)
         guard (currentArchive == nil) || (schema != nil) else {
             return currentArchive
         }

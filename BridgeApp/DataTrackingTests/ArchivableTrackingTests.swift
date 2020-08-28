@@ -34,6 +34,7 @@
 import XCTest
 @testable import BridgeApp
 @testable import DataTracking
+import JsonModel
 
 class ArchivableTrackingTests: XCTestCase {
     
@@ -62,7 +63,7 @@ class ArchivableTrackingTests: XCTestCase {
         do {
             let clientData = try result.dataScore()
             XCTAssertNotNil(clientData)
-            if let clientData = clientData as? [String : Any] {
+            if let clientData = clientData as? [String : JsonSerializable] {
                 XCTAssertEqual(clientData["identifier"] as? String, identifier)
                 if let items = clientData["items"] as? [[String : Any]] {
                     XCTAssertEqual(items.count, 2)
@@ -226,7 +227,7 @@ class ArchivableTrackingTests: XCTestCase {
         result.medications = [medA3, medC3]
         
         do {
-            let clientData = try result.dataScore() as? [String : Any]
+            let clientData = try result.dataScore() as? [String : JsonSerializable]
             XCTAssertNotNil(clientData)
             if let items = clientData?["items"] as? [[String : Any]] {
                 XCTAssertEqual(items.count, 2)

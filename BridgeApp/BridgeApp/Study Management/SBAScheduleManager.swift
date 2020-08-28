@@ -357,7 +357,7 @@ open class SBAScheduleManager: SBAReportManager {
         }()
         
         // We only care about task results that have a matching schema otherwise, return the guid schedule.
-        guard let schema = taskResult.schemaInfo ?? schemaInfo(for: taskResult.identifier),
+        guard let schema = (taskResult as? RSDTaskRunResult)?.schemaInfo ?? schemaInfo(for: taskResult.identifier),
             let _ = schema.schemaIdentifier else {
                 return guidSchedule
         }
@@ -506,7 +506,7 @@ open class SBAScheduleManager: SBAReportManager {
             // saved. So these changes should **not** be commited. Throw them out.
             SBAFactory.shared.trackingRules.remove(where: { $0 is DataGroupsTrackingRule})
             let rule = DataGroupsTrackingRule(initialCohorts: participant.dataGroups ?? [])
-            rule.taskRunUUID = taskViewModel.taskResult.taskRunUUID
+            rule.taskRunUUID = (taskViewModel.taskResult as? RSDTaskRunResult)?.taskRunUUID
             rule.addedDataGroups = self.addedDataGroups(for: taskViewModel)
             SBAFactory.shared.trackingRules.append(rule)
         } else {
@@ -610,8 +610,12 @@ open class SBAScheduleManager: SBAReportManager {
     ///
     /// - parameter taskViewModel: The task path for the task which has just run.
     open func updateDataGroups(for taskViewModel: RSDTaskViewModel) {
+        guard let uuid = (taskViewModel.taskResult as? RSDTaskRunResult)?.taskRunUUID
+            else {
+                return
+        }
         let rules = SBAFactory.shared.trackingRules.remove {
-            ($0 as? DataGroupsTrackingRule)?.taskRunUUID == taskViewModel.taskResult.taskRunUUID
+            ($0 as? DataGroupsTrackingRule)?.taskRunUUID == uuid
         }
         guard let rule = rules.first as? DataGroupsTrackingRule,
             rule.initialCohorts != rule.currentCohorts

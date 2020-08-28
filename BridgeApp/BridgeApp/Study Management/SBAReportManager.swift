@@ -344,7 +344,7 @@ open class SBAReportManager: SBAArchiveManager, RSDDataStorageManager {
     public func saveTaskData(_ data: RSDTaskData, from taskResult: RSDTaskResult?) {
         
         // If there isn't a task result then save the task data directly to a report.
-        guard let uuid = taskResult?.taskRunUUID else {
+        guard let uuid = (taskResult as? RSDTaskRunResult)?.taskRunUUID else {
             let report = SBAReport(taskData: data)
             DispatchQueue.main.async {
                 self.saveReport(report)
@@ -586,7 +586,7 @@ open class SBAReportManager: SBAArchiveManager, RSDDataStorageManager {
                     let jsonData: SBBJSONValue = {
                         guard let newJSON = clientData as? [String: Any] else { return clientData }
                         var json = newJSON
-                        json[SBATaskRunUUIDKey] = taskResult.taskRunUUID.uuidString
+                        json[SBATaskRunUUIDKey] = (taskResult as? RSDTaskRunResult)?.taskRunUUID.uuidString
                         return json as NSDictionary
                     }()
                     let report = newReport(reportIdentifier: reportIdentifier, date: taskResult.endDate, clientData: jsonData)
@@ -629,7 +629,7 @@ open class SBAReportManager: SBAArchiveManager, RSDDataStorageManager {
     /// The report identifier to use for the given task result. If the `topLevelResult` is non-nil
     /// then this task result is a subtask of another result.
     open func reportIdentifier(for taskResult: RSDTaskResult, topLevelResult: RSDTaskResult?) -> String? {
-        let schemaInfo = taskResult.schemaInfo ?? self.schemaInfo(for: taskResult.identifier)
+        let schemaInfo = (taskResult as? RSDTaskRunResult)?.schemaInfo ?? self.schemaInfo(for: taskResult.identifier)
         return schemaInfo?.schemaIdentifier
     }
     
@@ -673,9 +673,11 @@ open class SBAReportManager: SBAArchiveManager, RSDDataStorageManager {
         // Get the hold data, if any.
         var holdJSON: JsonSerializable?
         _holdDataQueue.sync {
-            let key = HoldDataKey(taskResult.taskRunUUID, taskResult.identifier)
-            holdJSON = self._holdData[key]?.json
-            self._holdData[key] = nil
+            if let uuid = (taskResult as? RSDTaskRunResult)?.taskRunUUID {
+                let key = HoldDataKey(uuid, taskResult.identifier)
+                holdJSON = self._holdData[key]?.json
+                self._holdData[key] = nil
+            }
         }
         
         // For now, assume that if there is data from the task, that that scoring is all we need. Eventually,

@@ -224,7 +224,7 @@ class ScheduleArchivingTests: SBAScheduleManagerTests {
     
     func testBuildReports_CompoundTask() {
         let taskPath = runCompoundTask()
-        let topResult = taskPath.taskResult
+        let topResult = taskPath.taskResult as! RSDTaskRunResult
         guard let reports = self.scheduleManager.buildReports(from: taskPath.taskResult)
             else {
                 XCTFail("Failed to build the reports for this task result")
@@ -295,6 +295,8 @@ class ScheduleArchivingTests: SBAScheduleManagerTests {
         
         XCTAssertEqual(reports.count, 3)
         
+        let topResult = taskPath.taskResult as! RSDTaskRunResult
+        
         if let report = reports.first(where: { $0.reportKey == mainTaskSchemaIdentifier }) {
             XCTAssertEqual(report.date, mainResult?.endDate)
             if let dictionary = report.clientData as? NSDictionary {
@@ -305,7 +307,7 @@ class ScheduleArchivingTests: SBAScheduleManagerTests {
                                "stepY" : "stepY moo"],
                     "step3": [ "stepX" : "stepX moo",
                                "stepY" : "stepY moo"],
-                    "taskRunUUID" : taskPath.taskResult.taskRunUUID.uuidString
+                    "taskRunUUID" : topResult.taskRunUUID.uuidString
                 ]
                 XCTAssertEqual(dictionary as NSDictionary, expectedDictionary)
             }
@@ -324,7 +326,7 @@ class ScheduleArchivingTests: SBAScheduleManagerTests {
                     "stepA" : 0,
                     "stepB" : 1,
                     "stepC" : 2,
-                    "taskRunUUID" : taskPath.taskResult.taskRunUUID.uuidString
+                    "taskRunUUID" : topResult.taskRunUUID.uuidString
                 ]
                 XCTAssertEqual(dictionary as NSDictionary, expectedDictionary)
             }
@@ -360,6 +362,8 @@ class ScheduleArchivingTests: SBAScheduleManagerTests {
         
         XCTAssertEqual(reports.count, 1)
         
+        let topResult = taskPath.taskResult as! RSDTaskRunResult
+        
         if let report = reports.first(where: { $0.reportKey == mainTaskSchemaIdentifier }) {
             if let dictionary = report.clientData as? NSDictionary {
                 let expectedDictionary : NSDictionary = [
@@ -373,7 +377,7 @@ class ScheduleArchivingTests: SBAScheduleManagerTests {
                     ],
                     "foo" : 3,
                     "baroo" : 5,
-                    "taskRunUUID" : taskPath.taskResult.taskRunUUID.uuidString
+                    "taskRunUUID" : topResult.taskRunUUID.uuidString
                 ]
                 XCTAssertEqual(dictionary as NSDictionary, expectedDictionary)
             }

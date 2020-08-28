@@ -34,6 +34,7 @@
 import XCTest
 @testable import BridgeApp
 @testable import DataTracking
+import ResearchUI
 
 class MedicationLoggingDataSourceTests: XCTestCase {
 
@@ -41,6 +42,7 @@ class MedicationLoggingDataSourceTests: XCTestCase {
         super.setUp()
 
         NSLocale.setCurrentTest(Locale(identifier: "en_US"))
+        LocalizationBundle.registerDefaultBundlesIfNeeded()
     }
 
     override func tearDown() {

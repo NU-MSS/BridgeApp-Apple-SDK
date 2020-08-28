@@ -89,10 +89,9 @@ open class SBAScheduledActivityArchive: SBBDataArchive, RSDDataArchive {
         }
     }
     
-    /// By default, the task result is not included and metadata are **not** archived directly, while the
-    /// answer map is included.
+    /// syoung 07/21/2020 Change request to include all files by default.
     open func shouldInsertData(for filename: RSDReservedFilename) -> Bool {
-        return filename == .answers
+        true
     }
     
     /// Get the archivable object for the given result.
@@ -164,7 +163,7 @@ open class SBAScheduledActivityArchive: SBBDataArchive, RSDDataArchive {
         // needing to release, pushing a work-around while I continue to investigate.
         if !self.usesV1LegacySchema, self.answersDictionary == nil, let taskResult = self.taskResult {
             let builder = RSDDefaultScoreBuilder()
-            let answers = builder.getScoringData(from: taskResult) as? [String : Any] ?? [String : Any]()
+            let answers = builder.getScoringData(from: taskResult) as? [String : JsonSerializable] ?? [String : Any]()
             self.insertAnswersDictionary(answers)
         }
         
